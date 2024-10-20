@@ -1,0 +1,8 @@
+PA 5 - Yahtzee - Main Menu
+
+Please select your preferred option by entering the corresponding number:
+1 : Print gamerules
+2 : Start a game of Yahtzee
+3 : Exit
+
+Your selection: 
