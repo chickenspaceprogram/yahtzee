@@ -1,7 +1,6 @@
 #include "ui.h"
 #include "ascii-dice.h"
 #include "yahtzee.h"
-#include "syscalls.h"
 #include <stdio.h>
 
 int main(void) {
