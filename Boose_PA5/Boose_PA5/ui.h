@@ -3,9 +3,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <conio.h>
 #include <stdlib.h>
-#include <Windows.h>
 #include "yahtzee.h"
 #include "ascii-dice.h"
 #include "escape_codes.h"

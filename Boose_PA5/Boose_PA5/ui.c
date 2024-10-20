@@ -6,8 +6,8 @@ void print_file(char *filename, int clear_screen) {
 	// opening file, ensuring it is non-null
 	FILE* input = fopen(filename, "r");
 	if (input == NULL) {
-		printf("An error occurred while loading the file `%s`.\n\n", filename);
-		system("pause");
+		printf("An error occurred while loading the file `%s`.\n\nPress any key to continue . . . ", filename);
+		GETCH();
 		return;
 	}
 	// using a buffer looked marginally nicer than using getc() and putc() character-by-character
@@ -142,8 +142,8 @@ int roll_selector(int *dice, int *should_reroll, int turn_num) {
 			LOAD_CURSOR();
 			SHOW_CURSOR();
 
-			printf("\n\n\n\n\n\n\nRoll saved. "); // i shouldn't have to do this many newlines, but 
-			system("pause"); // sneaky use of system("pause") to display "Press Enter to continue . . ." for me
+			printf("\n\n\n\n\n\n\nRoll saved. Press any key to continue . . . "); // i shouldn't have to do this many newlines, but 
+			GETCH();
 			CLEAR_SCREEN();
 			return 0;
 		}
@@ -207,4 +207,3 @@ void clear_no_roll(int die_num) {
 	CURSOR_TO_POSITION(ROLL_INFO_ROW + 1, column);
 	printf("         ");
 }
-
