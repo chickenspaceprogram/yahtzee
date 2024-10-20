@@ -37,15 +37,15 @@ void play_yahtzee_turn(player_info *player) {
 	print_dice_combinations(player->scores, player->player_dice.frequencies);
 	selection = select_dice_combination(player->scores);
 	player->scores[selection] = get_dice_score(player->player_dice.frequencies, (score_combinations) selection);
-	printf("Your score is now %d. ", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
-	system("pause");
+	printf("Your score is now %d. Press any key to continue . . . ", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
+	GETCH();
 }
 
 void start_turn(player_info *player, int num_turns, char *player_name) {
 	CLEAR_SCREEN();
 	printf("Hi %s! It's currently turn %d.\n", player_name, num_turns);
-	printf("Your current score is: %d\n\n", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
-	system("pause");
+	printf("Your current score is: %d\n\nPress any key to continue . . .", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
+	GETCH();
 }
 
 int get_dice_score(int *dice_freqs, score_combinations selection) {
