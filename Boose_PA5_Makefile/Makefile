@@ -21,14 +21,14 @@ NAME := Boose_PA5#			project name
 
 ALL_SRCS := $(wildcard $(SRC)/*.c) # gets a space separated list of every source file in src/
 
-# replaces src/ with target/obj/ and .c with .o for each thing in ALL_SRCS
-ALL_OBJS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(ALL_SRCS)) # definitely readable 
+ALL_OBJS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(ALL_SRCS)) # replaces src/ with target/obj/ and .c with .o for each thing in ALL_SRCS
 
-# linking source files into a single executable
+# wrapper for `build`
 all: build $(BIN)
+	ln -s $(BIN)/$(NAME) $(NAME)
 	@printf "\nBuild completed successfully!\n"
 
-
+# linking source files into a single executable
 build: $(ALL_OBJS)
 	$(CC) $^ -o $(BIN)/$(NAME)
 
@@ -48,6 +48,7 @@ clean:
 	rm -rf target
 	rm -f $(NAME).zip
 
+# running executable
 run: all
 	./$(BIN)/$(NAME)
 
@@ -60,4 +61,4 @@ zip: clean
 
 new: 
 	mkdir src
-	printf ".DS_Store\ntarget\n$(NAME).zip" >> .gitignore
+	printf ".DS_Store\ntarget\n$(NAME).zip\n$(NAME)" >> .gitignore
