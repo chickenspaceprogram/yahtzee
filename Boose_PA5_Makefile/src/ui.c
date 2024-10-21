@@ -70,7 +70,7 @@ void print_dice_combinations(int *scores, int *dice_freqs) {
 	};
 	printf("Please select your preferred option by entering the corresponding number:\n\n");
 	printf("----------------------------------\n");
-	printf(one_digit_option_messages[0]);
+	printf("%s", one_digit_option_messages[0]);
 	printf("----------------------------------\n");
 	// looping through and printing every valid combination
 	for (int i = 1; i < 14; ++i) {

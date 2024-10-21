@@ -1,31 +1,32 @@
 # "we have Visual Studio at home"
-# Description: A Makefile for automatically building simple C projects.
-# Author: chickenspaceprogram
+
+# A Makefile for automatically building simple C projects.
 
 # To compile, run `make` or `make all`
 # To run, run `make run`.
-# To delete compiled filed, run `make clean`.
+# To delete compiled files, run `make clean`.
 # To export the project as a .zip file, run `make zip`.
 # To make a new project, run `make new`.
 
 
 # comments are here since I will have to review this in 6 months and will wonder what it's doing
 
-.PHONY: all clean objects run zip build new
+.PHONY: all clean objects run zip build new 
 
-TARGET := target
-BIN := $(TARGET)#			binary directory
-OBJ := $(TARGET)/obj#		object directory
-SRC := src#					source directory
-NAME := Boose_PA5#			project name
+# directories and file names
+NAME:=Boose_PA5
+SYMLINK:=./$(NAME)# puts a symlink to the actual binary in this directory path
 
-ALL_SRCS := $(wildcard $(SRC)/*.c) # gets a space separated list of every source file in src/
+TARGET:=target
+BIN:=$(TARGET)/bin
+OBJ:=$(TARGET)/obj
+SRC:=src
+ALL_SRCS:=$(shell find . -name '*.c') # gets a space separated list of every source file in src/
 
-ALL_OBJS := $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(ALL_SRCS)) # replaces src/ with target/obj/ and .c with .o for each thing in ALL_SRCS
+ALL_OBJS:=$(subst ./$(SRC),$(OBJ),$(ALL_SRCS:.c=.o)) # replaces src/ with target/obj/ and .c with .o for each thing in ALL_SRCS
 
 # wrapper for `build`
-all: build $(BIN)
-	ln -s $(BIN)/$(NAME) $(NAME)
+all: $(BIN) build $(SYMLINK)
 	@printf "\nBuild completed successfully!\n"
 
 # linking source files into a single executable
@@ -34,6 +35,7 @@ build: $(ALL_OBJS)
 
 # compiling source files
 $(OBJ)/%.o: $(SRC)/%.c $(OBJ)
+	mkdir -p $(dir $@)
 	$(CC) -Wall -c -I$(SRC) $< -o $@
 
 # Making target directories
@@ -42,17 +44,19 @@ $(OBJ):
 	mkdir -p $(OBJ)
 
 $(BIN):
+	@echo "yeet!!!! $(ALL_OBJS)"
 	mkdir -p $(BIN)
 
 clean: 
 	rm -rf target
 	rm -f $(NAME).zip
+	rm -f Boose_PA5
 
 # running executable
 run: all
 	./$(BIN)/$(NAME)
 
-zip: clean
+zip:
 	mkdir $(NAME)
 	cp -R $(SRC) $(NAME)
 	cp Makefile $(NAME)
@@ -62,3 +66,6 @@ zip: clean
 new: 
 	mkdir src
 	printf ".DS_Store\ntarget\n$(NAME).zip\n$(NAME)" >> .gitignore
+
+$(SYMLINK):
+	ln -s $(BIN)/$(NAME) $(SYMLINK)

@@ -24,7 +24,7 @@ void play_yahtzee_game(void) {
 }
 
 void play_yahtzee_turn(player_info *player) {
-	int rolls = 0, continue_turn = 1, selection = 0, score = 0;
+	int rolls = 0, continue_turn = 1, selection = 0;
 	do {
 		process_roll(&(player->player_dice));
 		continue_turn = roll_selector(player->player_dice.values, player->player_dice.should_reroll, ++rolls);
