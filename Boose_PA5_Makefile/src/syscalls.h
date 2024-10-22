@@ -10,20 +10,21 @@
 #define GETCH() _getch();
 #define NEWLINE '\r'
 #else
-
+#include <termios.h>
+#include <unistd.h>
 /**
-* Function name: 
-* Date created: 
-* Date last modified: 
-* Description: 
-* Inputs: 
-* Outputs: 
+* Function name: unix_getch
+* Date created: 10/19/2024
+* Date last modified: 10/22/2024
+* Description: Gets a character directly from stdin without buffering or echoing it to the terminal.
+* Inputs: none
+* Outputs: The character that was entered.
 */
 int unix_getch(void); // if the OS is *nix, we put the definition here to make it accessible to the rest of the program
 
 #define CLEAR_SCREEN() system("clear")
 #define GETCH() unix_getch()
-#define NEWLINE '\r' // I thought I needed separate macros and needed to define \r and \n separately for windows reasons but apparently not. removing/renaming this macro would suck so it stays.
+#define NEWLINE '\n'
 
 #endif
 
