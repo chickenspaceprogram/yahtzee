@@ -34,6 +34,7 @@ all: $(BIN) build $(FILE_DESTS) $(SYMLINK)
 build: $(ALL_OBJS)
 	$(CC) $^ -o $(BIN)/$(NAME)
 
+# this is a very hacky way to put all of the text files in the right places, oh well
 $(FILE_DESTS):
 	mkdir -p $(dir $@)
 	cp $(SRC)/$@ $@
