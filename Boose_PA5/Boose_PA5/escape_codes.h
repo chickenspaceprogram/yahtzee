@@ -2,7 +2,7 @@
 #define ESCAPE_CODES_H
 
 
-// windows actually supports ANSI escape codes! good job microsoft, it only took you until *checks notes* 2016
+// windows actually supports ANSI escape codes! good job microsoft, it only took you until 2016
 #define HIDE_CURSOR()					printf("\x1B[?25l")
 #define SHOW_CURSOR()					printf("\x1B[?25h")
 #define RESET_COLORS()					printf("\x1B[0m")

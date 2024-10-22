@@ -24,7 +24,7 @@ void play_yahtzee_game(void) {
 }
 
 void play_yahtzee_turn(player_info *player) {
-	int rolls = 0, continue_turn = 1, selection = 0, score = 0;
+	int rolls = 0, continue_turn = 1, selection = 0;
 	do {
 		process_roll(&(player->player_dice));
 		continue_turn = roll_selector(player->player_dice.values, player->player_dice.should_reroll, ++rolls);
@@ -38,14 +38,18 @@ void play_yahtzee_turn(player_info *player) {
 	selection = select_dice_combination(player->scores);
 	player->scores[selection] = get_dice_score(player->player_dice.frequencies, (score_combinations) selection);
 	printf("Your score is now %d. Press any key to continue . . . ", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
+	HIDE_CURSOR();
 	GETCH();
+	SHOW_CURSOR();
 }
 
 void start_turn(player_info *player, int num_turns, char *player_name) {
 	CLEAR_SCREEN();
 	printf("Hi %s! It's currently turn %d.\n", player_name, num_turns);
 	printf("Your current score is: %d\n\nPress any key to continue . . .", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
+	HIDE_CURSOR();
 	GETCH();
+	SHOW_CURSOR();
 }
 
 int get_dice_score(int *dice_freqs, score_combinations selection) {
