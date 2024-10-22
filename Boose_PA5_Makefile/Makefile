@@ -11,7 +11,7 @@
 
 # comments are here since I will have to review this in 6 months and will wonder what it's doing
 
-.PHONY: all clean objects run zip build new 
+.PHONY: all clean objects run zip build new copy-files
 
 # directories and file names
 NAME:=Boose_PA5
@@ -21,17 +21,23 @@ TARGET:=target
 BIN:=$(TARGET)/bin
 OBJ:=$(TARGET)/obj
 SRC:=src
-ALL_SRCS:=$(shell find . -name '*.c') # gets a space separated list of every source file in src/
-
+ALL_SRCS:=$(shell find . -name "*.c") # gets a space separated list of every source file in src/
 ALL_OBJS:=$(subst ./$(SRC),$(OBJ),$(ALL_SRCS:.c=.o)) # replaces src/ with target/obj/ and .c with .o for each thing in ALL_SRCS
+FILE_SRCS:=$(shell find src -not -type d | grep -v '\.[ch]$$')
+FILE_DESTS:=$(subst $(SRC),$(BIN),$(FILE_SRCS))
 
 # wrapper for `build`
-all: $(BIN) build $(SYMLINK)
+all: $(BIN) build $(FILE_DESTS) $(SYMLINK)
 	@printf "\nBuild completed successfully!\n"
 
 # linking source files into a single executable
 build: $(ALL_OBJS)
 	$(CC) $^ -o $(BIN)/$(NAME)
+
+$(FILE_DESTS):
+	mkdir -p $(dir $@)
+	cp $(subst $(BIN),$(SRC),$@) $@
+
 
 # compiling source files
 $(OBJ)/%.o: $(SRC)/%.c $(OBJ)
@@ -44,7 +50,6 @@ $(OBJ):
 	mkdir -p $(OBJ)
 
 $(BIN):
-	@echo "yeet!!!! $(ALL_OBJS)"
 	mkdir -p $(BIN)
 
 clean: 
