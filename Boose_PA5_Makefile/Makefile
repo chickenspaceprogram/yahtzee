@@ -24,7 +24,7 @@ SRC:=src
 ALL_SRCS:=$(shell find . -name "*.c") # gets a space separated list of every source file in src/
 ALL_OBJS:=$(subst ./$(SRC),$(OBJ),$(ALL_SRCS:.c=.o)) # replaces src/ with target/obj/ and .c with .o for each thing in ALL_SRCS
 FILE_SRCS:=$(shell find src -not -type d | grep -v '\.[ch]$$')
-FILE_DESTS:=$(subst $(SRC),$(BIN),$(FILE_SRCS))
+FILE_DESTS:=$(subst $(SRC)/,,$(FILE_SRCS))
 
 # wrapper for `build`
 all: $(BIN) build $(FILE_DESTS) $(SYMLINK)
@@ -36,7 +36,7 @@ build: $(ALL_OBJS)
 
 $(FILE_DESTS):
 	mkdir -p $(dir $@)
-	cp $(subst $(BIN),$(SRC),$@) $@
+	cp $(SRC)/$@ $@
 
 
 # compiling source files
@@ -59,7 +59,7 @@ clean:
 
 # running executable
 run: all
-	./$(BIN)/$(NAME)
+	$(BIN)/$(NAME)
 
 zip:
 	mkdir $(NAME)
