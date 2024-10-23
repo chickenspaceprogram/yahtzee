@@ -2,27 +2,30 @@
 
 #ifndef _WIN32
 
+// this is commented heavily to help me if I ever end up reviewing this
+// credit goes to the manpage for termios for explaining how this stuff works, as well as the many random stackoverflow threads I viewed while trying to figure out how to do this
 int unix_getch(void) {
+	// declaring structs that contain the terminal information
 	struct termios prev_settings, non_canon;
+
+	// getting the settings of the current tty, setting both structs to that information
 	tcgetattr(STDIN_FILENO, &prev_settings);
 	non_canon = prev_settings;
 
-	// setting both the bits at the ICANON place and the ECHO place to 1
-	// ICANON controls whether terminal input is buffered by lines (meaning that, when set to 0, this program can read characters immediately on keypress without waiting for [Enter] to be pressed)
-	// ECHO controls whether keypresses are echoed to the terminal; when set to 0, nothing gets displayed
-	tcflag_t flags = ICANON | ECHO;
+	// setting both the bits at the ICANON place and the ECHO place to 1, then flipping all bits
+	tcflag_t flags = ~(ICANON | ECHO);
 
-	// flipping the bits of `flags` and binary-ANDing it with the currently-set flags to force the ICANON and ECHO bits to 0 and leave all other bits unchanged
-	non_canon.c_lflag &= (~(flags));
+	// binary AND-ing `flags` with the currently-set flags forces the bits at the ICANON and ECHO places to 0, and leaves all others unchanged
+	non_canon.c_lflag = flags & non_canon.c_lflag;
 
 	// setting the terminal settings to our new settings
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &non_canon);
+	tcsetattr(STDIN_FILENO, TCSANOW, &non_canon);
 
 	// getting a character from stdin
 	int char_gotten = getchar();
 
 	// resetting terminal settings
-	tcsetattr(STDIN_FILENO, TCSAFLUSH, &prev_settings);
+	tcsetattr(STDIN_FILENO, TCSANOW, &prev_settings);
 
 	return char_gotten;
 }
