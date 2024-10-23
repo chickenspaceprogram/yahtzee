@@ -1,6 +1,4 @@
-# "we have Visual Studio at home"
-
-# A Makefile for automatically building simple C projects.
+# "Visual Studio at home"
 
 # To compile, run `make` or `make all`
 # To run, run `make run`.
