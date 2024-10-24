@@ -57,23 +57,23 @@ void print_dice_combinations(int *scores, int *dice_freqs) {
 	const char *two_digit_option_messages[] = { // made const since it won't change
 		"",
 		"", // you can't have a sum of 1s that is > 9, so we can save a few bytes
-		DRAW_MODE"x"ASCII_MODE"  2 : Sum of 2s        "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE"  3 : Sum of 3s        "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE"  4 : Sum of 4s        "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE"  5 : Sum of 5s        "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE"  6 : Sum of 6s        "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE"  7 : Three-of-a-kind  "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE"  8 : Four-of-a-kind   "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE"  9 : Full House       "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE" 10 : Small Straight   "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE" 11 : Large Straight   "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE" 12 : Yahtzee          "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n",
-		DRAW_MODE"x"ASCII_MODE" 13 : Chance           "DRAW_MODE"x"ASCII_MODE"   %d   ""x"ASCII_MODE"\n"
+		DRAW_MODE"x"ASCII_MODE"  2 : Sum of 2s        "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE"  3 : Sum of 3s        "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE"  4 : Sum of 4s        "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE"  5 : Sum of 5s        "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE"  6 : Sum of 6s        "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE"  7 : Three-of-a-kind  "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE"  8 : Four-of-a-kind   "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE"  9 : Full House       "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE" 10 : Small Straight   "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE" 11 : Large Straight   "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE" 12 : Yahtzee          "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n",
+		DRAW_MODE"x"ASCII_MODE" 13 : Chance           "DRAW_MODE"x"ASCII_MODE"   %d   "DRAW_MODE"x"ASCII_MODE"\n"
 	};
 	printf("Please select your preferred option by entering the corresponding number:\n\n");
-	printf(DRAW_MODE"kqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqql"ASCII_MODE"\n");
+	printf(DRAW_MODE"lqqqqqqqqqqqqqqqqqqqqqqqwqqqqqqqqk"ASCII_MODE"\n");
 	printf("%s", one_digit_option_messages[0]);
-	printf(DRAW_MODE"tqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqu"ASCII_MODE"\n");
+	printf(DRAW_MODE"tqqqqqqqqqqqqqqqqqqqqqqqnqqqqqqqqu"ASCII_MODE"\n");
 	// looping through and printing every valid combination
 	for (int i = 1; i < 14; ++i) {
 		if (scores[i] == -1) {
@@ -86,7 +86,7 @@ void print_dice_combinations(int *scores, int *dice_freqs) {
 			}
 		}
 	}
-	printf(DRAW_MODE"mqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqj"ASCII_MODE"\n");
+	printf(DRAW_MODE"mqqqqqqqqqqqqqqqqqqqqqqqvqqqqqqqqj"ASCII_MODE"\n");
 }
 
 int select_dice_combination(int *scores) {
