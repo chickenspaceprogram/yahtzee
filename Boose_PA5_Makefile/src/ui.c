@@ -48,8 +48,8 @@ int select_from_menu(int *scores, int *dice_freqs) {
 
 	// broken up into separate statements to make it sorta readable
 	HIDE_CURSOR();
-	printf("Please select your preferred option by entering the corresponding number:\n\n  ");
-	printf(DRAW_MODE"lqqqqqqqqqqqqqqqqqqqqqqwqqqqqqqqk\n"ASCII_MODE);
+	printf("Please select your preferred option by entering the corresponding number or using the arrow keys:\n\n");
+	printf("  "DRAW_MODE"lqqqqqqqqqqqqqqqqqqqqqqwqqqqqqqqk\n"ASCII_MODE);
 	printf("  "DRAW_MODE"x"ASCII_MODE" Combinations:        "DRAW_MODE"x"ASCII_MODE" Score: "DRAW_MODE"x\n"ASCII_MODE);
 	printf("  "DRAW_MODE"tqqqqqqqqqqqqqqqqqqqqqqnqqqqqqqqu\n"ASCII_MODE);
 

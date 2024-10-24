@@ -42,7 +42,7 @@ void print_file(char *filename, int clear_screen);
 * Function name: select_from_menu
 * Date created: 10/12/2024
 * Date last modified: 10/24/2024
-* Description: Prints all the valid dice combinations that haven't already been selected by the user
+* Description: Displays a menu with all the options that haven't yet been selected by the user.
 * Inputs: 
 * `scores` : An array containing the user's score for each dice combination (or -1, if the combination has not been selected yet)
 * `dice_freqs` : An array containing the frequency of each die roll.

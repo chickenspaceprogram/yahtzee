@@ -1,5 +1,13 @@
 #include "menu.h"
 
+
+// keeping #defines as local as possible
+#define ESC         0x1B
+#define UP_ARROW    0x141
+#define DOWN_ARROW  0x142
+#define RIGHT_ARROW 0x143
+#define LEFT_ARROW  0x144
+
 // functions are declared as static in the .c file to make them private
 
 /**
@@ -76,6 +84,17 @@ static int print_rows(option *options, int *option_row_nums, int num_options);
  */
 static int print_end_string(char *end_string);
 
+/**
+* Function name: handle_escape_sequences
+* Date created: 10/22/2024
+* Date last modified: 10/22/2024
+* Description:  Handles any escape sequences that the user has entered, currently just the arrow keys.
+*               Assumes that the escape character has already been gotten from stdin.
+* Inputs: none
+* Outputs:  A value representing the escape character entered.
+*           If a valid escape sequence isn't recognized, ESC is returned and any characters this function grabs are pushed back onto stdin.
+*/
+static int handle_escape_sequences(void);
 
 /* Public functions: */
 
@@ -180,14 +199,16 @@ int find_item(option *options, int num_options, char item_character, int current
 
 
 void clear_row(option *options, int option_to_print) {
-    printf("  %s", options[option_to_print].msg);
+    printf("  %s  ", options[option_to_print].msg);
     CURSOR_TO_COL(1);
 }
 
 void print_row(option *options, int option_to_print) {
+    printf("> ");
     INVERT_COLORS();
-    printf("> %s", options[option_to_print].msg);
+    printf("%s", options[option_to_print].msg);
     RESET_COLORS();
+    printf(" <");
     CURSOR_TO_COL(1);
 }
 
