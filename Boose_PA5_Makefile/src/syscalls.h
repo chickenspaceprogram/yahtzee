@@ -20,7 +20,7 @@
 * Inputs: none
 * Outputs: The character that was entered.
 */
-int unix_getch(void); // if the OS is *nix, we put the definition here to make it accessible to the rest of the program
+int unix_getch(void);
 
 #define CLEAR_SCREEN() system("clear")
 #define GETCH() unix_getch()
