@@ -60,7 +60,7 @@ clean:
 run: all
 	$(BIN)/$(NAME)
 
-zip:
+zip: clean
 	mkdir $(NAME)
 	cp -R $(SRC) $(NAME)
 	cp Makefile $(NAME)
