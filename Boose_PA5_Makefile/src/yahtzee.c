@@ -34,9 +34,9 @@ void play_yahtzee_turn(player_info *player) {
 	printf("The dice you rolled are:\n\n");
 	print_die_faces(player->player_dice.values, 5);
 	printf("\n");
-	print_dice_combinations(player->scores, player->player_dice.frequencies);
-	selection = select_dice_combination(player->scores);
+	selection = select_from_menu(player->scores, player->player_dice.frequencies);
 	player->scores[selection] = get_dice_score(player->player_dice.frequencies, (score_combinations) selection);
+	CLEAR_SCREEN();
 	printf("Your score is now %d. Press any key to continue . . . ", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
 	HIDE_CURSOR();
 	GETCH();

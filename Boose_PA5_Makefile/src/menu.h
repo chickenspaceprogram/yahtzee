@@ -16,7 +16,7 @@
 typedef struct option option;
 
 struct option {
-    char *msg;
+    char msg[256];
     unsigned char selection_char;
     int is_valid;
 };
@@ -29,12 +29,12 @@ struct option {
  *              Returns -1 if there are no valid options.
  * Inputs:
  * `options` : An array of option structs that contain the messages to be printed for each option
- * `top_message` :
+ * `end_string` : A string to be printed at the end of the menu
  * `` :
  * `` :
  * Outputs: The option that was selected
  */
-int menu(option *options, int num_options, int menu_start_row);
+int menu(option *options, char *end_string, int num_options);
 
 /**
 * Function name: handle_escape_sequences
@@ -48,14 +48,4 @@ int menu(option *options, int num_options, int menu_start_row);
 */
 int handle_escape_sequences(void);
 
-
-/**
- * Function name: count_newlines
- * Date created: 10/22/2024
- * Date last modified: 
- * Description: 
- * Inputs: 
- * Outputs: 
- */
-int count_newlines(char *string);
 #endif

@@ -18,7 +18,6 @@ struct player_info {
 	dice player_dice; // opted for nested structs for more clarity, player_info.dice.values is more readable than player_info.values
 };
 
-// we haven't learned enums yet but this is neater than a bunch of #define statements
 typedef enum score_combinations {
 	SUM_1 = 1,
 	SUM_2,

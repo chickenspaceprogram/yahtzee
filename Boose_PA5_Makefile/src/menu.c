@@ -16,21 +16,21 @@ static int find_item(option *options, int num_options, char item_character, int 
  * Function name: clear_row
  * Date created: 10/22/2024
  * Date last modified: 
- * Description: 
+ * Description: Prints a row without a `>` marker at the current cursor position
  * Inputs: 
  * Outputs: 
  */
-static void clear_row(option *options, int row_to_print, int option_to_print);
+static void clear_row(option *options, int option_to_print);
 
 /**
  * Function name: print_row
  * Date created: 10/22/2024
  * Date last modified: 
- * Description: 
+ * Description: Prints a row with a `>` marker at the current cursor position
  * Inputs: 
  * Outputs: 
  */
-static void print_row(option *options, int row_to_print, int option_to_print);
+static void print_row(option *options, int option_to_print);
 
 /**
  * Function name: up_row
@@ -55,24 +55,34 @@ static int down_row(option *options, int num_options, int current_selection);
 /**
  * Function name: print_rows
  * Date created: 10/24/2024
- * Date last modified: 
- * Description: 
+ * Date last modified: 10/24/24
+ * Description: Prints all the valid options, and returns how many valid options there were
  * Inputs: 
  * `options` : An array of structs containing the various printable options and information about them.
  * `option_row_nums` : An output array containing the associated row on which each option was printed.
  * `num_options` : The number of options to print
- * `start_row` : The row on which to start printing the options
- * Outputs: none
+ * Outputs: The total number of rows printed
  */
-static void print_rows(option *options, int *option_row_nums, int num_options, int start_row);
+static int print_rows(option *options, int *option_row_nums, int num_options);
+
+/**
+ * Function name: print_end_string
+ * Date created: 10/24/24
+ * Date last modified: 10/24/24
+ * Description: Prints the string to go at the end of the menu, and returns the number of newlines in this string.
+ * Inputs: 
+ * `end_string` : The string to go at the end of the menu
+ * Outputs: The number of newlines in the string
+ */
+static int print_end_string(char *end_string);
 
 
 /* Public functions: */
 
 
-int menu(option *options, int num_options, int menu_start_row) {
+int menu(option *options, char *end_string, int num_options) {
     int keypress = 0;
-    int selection = down_row(options, num_options, -1), temp; // finding first valid option
+    int selection = down_row(options, num_options, -1), temp = 0; // finding first valid option
     int option_rows[ARRAY_SIZE] = {0};
     
     if (selection == -1) { // in this case, there are no valid options
@@ -80,7 +90,12 @@ int menu(option *options, int num_options, int menu_start_row) {
     }
 
     // printing all the valid messages
-    print_rows(options, option_rows, num_options, menu_start_row);
+    temp = print_rows(options, option_rows, num_options);
+    temp += print_end_string(end_string);
+
+    CURSOR_UP(temp);
+    CURSOR_TO_COL(1);
+    print_row(options, selection); // reprinting the first row with the selector marker
     
     while (keypress != NEWLINE && keypress != EOF) {
         keypress = GETCH();
@@ -90,25 +105,38 @@ int menu(option *options, int num_options, int menu_start_row) {
         switch (keypress) {
             case UP_ARROW: case LEFT_ARROW:
                 // clearing row, finding the row to move to, and reprinting the new row
-                clear_row(options, option_rows[selection], selection);
-                selection = up_row(options, selection);
-                print_row(options, option_rows[selection], selection);
+                temp = up_row(options, selection);
+                if (temp != selection) {
+                    clear_row(options, selection);
+                    selection = temp;
+                    CURSOR_UP(1);
+                    print_row(options, selection);
+                }
                 break;
             case DOWN_ARROW: case RIGHT_ARROW:
-                clear_row(options, option_rows[selection], selection);
-                selection = down_row(options, num_options, selection);
-                print_row(options, option_rows[selection], selection);
+                temp = down_row(options, num_options, selection);
+                if (temp != selection) {
+                    clear_row(options, selection);
+                    selection = temp;
+                    CURSOR_DOWN(1);
+                    print_row(options, selection);
+                }
                 break;
             default:
                 if ((temp = find_item(options, num_options, keypress, selection)) != selection) {
-                    clear_row(options, option_rows[selection], selection);
+                    clear_row(options, selection);
+                    if (option_rows[temp] > option_rows[selection]) {
+                        CURSOR_DOWN(option_rows[temp] - option_rows[selection]);
+                    }
+                    else {
+                        CURSOR_UP(option_rows[selection] - option_rows[temp]);
+                    }
                     selection = temp;
-                    print_row(options, option_rows[selection], selection);
+                    print_row(options, selection);
                 }
                 break;
         }
     }
-
     return selection;
 }
 
@@ -148,30 +176,19 @@ int find_item(option *options, int num_options, char item_character, int current
     return current_selection;
 }
 
-int count_newlines(char *string) {
-    int i = 0;
-    int num_newlines = 0;
-    while (string[i] != '\0') {
-        if (string[i] == '\n') {
-            ++num_newlines;
-        }
-        ++i;
-    }
-
-    return num_newlines;
-}
-
 /* Private functions: */
 
 
-void clear_row(option *options, int row_to_print, int option_to_print) {
-    CURSOR_TO_POSITION(row_to_print, 1);
+void clear_row(option *options, int option_to_print) {
     printf("  %s", options[option_to_print].msg);
+    CURSOR_TO_COL(1);
 }
 
-void print_row(option *options, int row_to_print, int option_to_print) {
-    CURSOR_TO_POSITION(row_to_print, 1);
+void print_row(option *options, int option_to_print) {
+    INVERT_COLORS();
     printf("> %s", options[option_to_print].msg);
+    RESET_COLORS();
+    CURSOR_TO_COL(1);
 }
 
 int up_row(option *options, int current_selection) {
@@ -199,11 +216,27 @@ int down_row(option *options, int num_options, int current_selection) {
     return current_selection; // couldn't find an earlier valid selection
 }
 
-static void print_rows(option *options, int *option_row_nums, int num_options, int start_row) {
-    int current_row = start_row;
+int print_rows(option *options, int *option_row_nums, int num_options) {
+    int rows_printed = 0;
     for (int i = 0; i < num_options; ++i) {
         if (options[i].is_valid) {
-            clear_row(options, current_row++, i); // function is misleadingly named, sorry. this just prints a row without a > at the start.
+            option_row_nums[i] = rows_printed;
+            clear_row(options, i); // function is misleadingly named, sorry. this just prints a row without a > at the start.
+            putchar('\n');
+            ++rows_printed;
         }
     }
+    return rows_printed;
+}
+
+int print_end_string(char *end_string) {
+    int index = 0, num_newlines = 0;
+    while (end_string[index] != '\0') {
+        putchar(end_string[index]);
+        if (end_string[index] == '\n') {
+            ++num_newlines;
+        }
+        ++index;
+    }
+    return num_newlines;
 }

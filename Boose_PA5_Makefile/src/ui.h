@@ -8,6 +8,7 @@
 #include "ascii-dice.h"
 #include "escape_codes.h"
 #include "syscalls.h"
+#include "menu.h"
 
 #define PAGE_SIZE		4096
 
@@ -15,6 +16,9 @@
 #define ROLL_INFO_ROW	11
 #define COL_SIZE		12
 #define SHIFT_AMT		-8
+
+#define SCORE_POS       41
+#define NUM_OPTIONS     14
 
 
 /*
@@ -35,16 +39,16 @@ Please note that some of the functions in this file were originally written for 
 void print_file(char *filename, int clear_screen);
 
 /**
-* Function name: print_dice_combinations
+* Function name: select_from_menu
 * Date created: 10/12/2024
-* Date last modified: 10/18/2024
+* Date last modified: 10/24/2024
 * Description: Prints all the valid dice combinations that haven't already been selected by the user
 * Inputs: 
 * `scores` : An array containing the user's score for each dice combination (or -1, if the combination has not been selected yet)
 * `dice_freqs` : An array containing the frequency of each die roll.
-* Outputs: none
+* Outputs: The user's selection.
 */
-void print_dice_combinations(int *scores, int *dice_freqs);
+int select_from_menu(int *scores, int *dice_freqs);
 
 /**
 * Function name: select_dice_combination
