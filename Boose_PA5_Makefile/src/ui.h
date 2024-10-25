@@ -7,7 +7,7 @@
 #include "yahtzee.h"
 #include "ascii-dice.h"
 #include "escape-codes.h"
-#include "syscalls.h"
+#include "terminal.h"
 #include "menu.h"
 
 #define PAGE_SIZE		4096

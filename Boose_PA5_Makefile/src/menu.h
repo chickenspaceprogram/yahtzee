@@ -2,7 +2,7 @@
 #define MENU_H
 
 #include <stdio.h>
-#include "syscalls.h"
+#include "terminal.h"
 #include "escape-codes.h"
 
 #define ARRAY_SIZE 256

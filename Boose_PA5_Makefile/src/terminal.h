@@ -1,5 +1,5 @@
-#ifndef SYSCALLS_H
-#define SYSCALLS_H
+#ifndef TERMINAL_H
+#define TERMINAL_H
 
 #include <stdio.h>
 #include <stdlib.h>

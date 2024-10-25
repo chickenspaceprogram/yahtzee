@@ -15,7 +15,7 @@ int main(void) {
 	while (1) {
 		CLEAR_SCREEN();
 		HIDE_CURSOR();
-		printf("Please select your preferred option by entering the corresponding number or using the arrow keys:\n\n");
+		printf("Please select an option by pressing the key next to it or using the arrow keys.\n\nThen, press [Enter] to save your selection.\n\n");
 		printf("  "DRAW_MODE"lqqqqqqqqqqqqqqqqqqqqqqqqqqqqk\n"ASCII_MODE);
 		printf("  "DRAW_MODE"x"ASCII_MODE" PA 5 - Yahtzee - Main Menu "DRAW_MODE"x\n"ASCII_MODE);
 		printf("  "DRAW_MODE"tqqqqqqqqqqqqqqqqqqqqqqqqqqqqu\n"ASCII_MODE);

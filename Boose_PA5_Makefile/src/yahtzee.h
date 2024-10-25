@@ -5,7 +5,7 @@
 #include "dice.h"
 #include "ui.h"
 #include "ascii-dice.h"
-#include "syscalls.h"
+#include "terminal.h"
 
 #define NUM_DICE			5
 #define START_SCORE_ARRAY	1

@@ -1,5 +1,5 @@
 #include "ui.h"
-#include "syscalls.h"
+#include "terminal.h"
 
 /**
  * Function name: num_to_str
@@ -48,7 +48,7 @@ int select_from_menu(int *scores, int *dice_freqs) {
 
 	// broken up into separate statements to make it sorta readable
 	HIDE_CURSOR();
-	printf("Please select your preferred option by entering the corresponding number or using the arrow keys:\n\n");
+	printf("Please select an option by pressing the key next to it or using the arrow keys.\n\nThen, press [Enter] to save your selection.\n\n");
 	printf("  "DRAW_MODE"lqqqqqqqqqqqqqqqqqqqqqqwqqqqqqqqk\n"ASCII_MODE);
 	printf("  "DRAW_MODE"x"ASCII_MODE" Combinations:        "DRAW_MODE"x"ASCII_MODE" Score: "DRAW_MODE"x\n"ASCII_MODE);
 	printf("  "DRAW_MODE"tqqqqqqqqqqqqqqqqqqqqqqnqqqqqqqqu\n"ASCII_MODE);
@@ -95,7 +95,7 @@ int roll_selector(int *dice, int *should_reroll, int turn_num) {
 
 
 	// telling user what to do
-	printf("\n\n\n\n\nCurrently on roll %d.\n\nPress the number corresponding to a die to toggle whether it is to be rolled.\nTo reroll dice, press [Space], and to end your turn, press [Enter].\n", turn_num);
+	printf("\n\n\n\n\nCurrently on roll %d of 3.\n\nPress the number corresponding to a die to toggle whether it is to be rolled.\nTo reroll dice, press [Space], and to end your turn, press [Enter].\n", turn_num);
 
 	// saving position of and hiding cursor
 	SAVE_CURSOR();

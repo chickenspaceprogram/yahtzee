@@ -1,4 +1,4 @@
-#include "syscalls.h"
+#include "terminal.h"
 
 #ifndef _WIN32
 
