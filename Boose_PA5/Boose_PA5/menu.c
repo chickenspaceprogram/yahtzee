@@ -2,7 +2,6 @@
 
 
 // keeping #defines as local as possible
-#define ESC         0x1B
 #define UP_ARROW    0x141
 #define DOWN_ARROW  0x142
 #define RIGHT_ARROW 0x143
