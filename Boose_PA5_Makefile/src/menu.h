@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "syscalls.h"
-#include "escape_codes.h"
+#include "escape-codes.h"
 
 #define ARRAY_SIZE 256
 

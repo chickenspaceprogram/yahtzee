@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "yahtzee.h"
 #include "ascii-dice.h"
-#include "escape_codes.h"
+#include "escape-codes.h"
 #include "syscalls.h"
 #include "menu.h"
 
@@ -64,7 +64,7 @@ int select_dice_combination(int *scores);
 /**
 * Function name: roll_selector
 * Date created: 10/12/2024
-* Date last modified: 10/18/2024
+* Date last modified: 10/24/2024
 * Description: 
 * Inputs: 
 * `dice` : An array containing the dice the user rolled. The first value in this array is ignored, and there are assumed to be 5 dice in this array. Therefore, the length of this array must be 6.
