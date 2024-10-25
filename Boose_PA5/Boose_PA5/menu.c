@@ -171,11 +171,13 @@ int menu(option *options, char *end_string, int num_options) {
 }
 
 int handle_escape_sequences(void) {
+#ifndef _WIN32
     int first_char = GETCH(), second_char;
     if (first_char != '[') {
         ungetc(first_char, stdin);
         return ESC;
     }
+#endif
     switch (second_char = GETCH()) {
         case UP_CHAR:
             return UP_ARROW;
@@ -191,7 +193,9 @@ int handle_escape_sequences(void) {
             break;
         default:
             ungetc(second_char, stdin);
+#ifndef _WIN32
             ungetc(first_char, stdin);
+#endif
             return ESC;
     }
 }
