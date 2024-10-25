@@ -5,7 +5,13 @@
 #include "terminal.h"
 #include "escape-codes.h"
 
-#define ARRAY_SIZE 256
+#define ARRAY_SIZE  256
+
+#ifdef _WIN32
+#define ESC         0xE0 // The character that starts an arrow key sequence
+#else
+#define ESC         0x1B // The character that starts an arrow key sequence
+#endif
 
 typedef struct option option;
 
