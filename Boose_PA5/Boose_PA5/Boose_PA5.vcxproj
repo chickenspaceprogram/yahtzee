@@ -31,16 +31,16 @@
     <ClCompile Include="dice.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="menu.c" />
-    <ClCompile Include="syscalls.c" />
+    <ClCompile Include="terminal.c" />
     <ClCompile Include="ui.c" />
     <ClCompile Include="yahtzee.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ascii-dice.h" />
     <ClInclude Include="dice.h" />
-    <ClInclude Include="escape_codes.h" />
+    <ClInclude Include="escape-codes.h" />
     <ClInclude Include="menu.h" />
-    <ClInclude Include="syscalls.h" />
+    <ClInclude Include="terminal.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="yahtzee.h" />
   </ItemGroup>

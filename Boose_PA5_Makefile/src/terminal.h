@@ -10,22 +10,22 @@
 /**
  * Macro name: CLEAR_SCREEN
  * Date created: 10/19/2024
- * Date last modified: 10/19/2024
+ * Date last modified: 10/25/2024
  * Description: Clears the screen.
  * Inputs: none
  * Outputs: none
  */
-#define CLEAR_SCREEN() system("cls");
+#define CLEAR_SCREEN() system("cls")
 
 /**
  * Macro name: GETCH
  * Date created: 10/19/2024
- * Date last modified: 10/19/2024
+ * Date last modified: 10/25/2024
  * Description: Gets a single keypress from the user without waiting or echoing the inputs to the terminal.
  * Inputs: none
  * Outputs: The user's keypress
  */
-#define GETCH() _getch();
+#define GETCH() _getch()
 
 #define NEWLINE '\r'
 #else

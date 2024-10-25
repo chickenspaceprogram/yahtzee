@@ -15,7 +15,7 @@
  * Inputs: none
  * Outputs: none
  */
-#define CLEAR_SCREEN() system("cls");
+#define CLEAR_SCREEN() system("cls")
 
 /**
  * Macro name: GETCH
@@ -25,7 +25,7 @@
  * Inputs: none
  * Outputs: The user's keypress
  */
-#define GETCH() _getch();
+#define GETCH() _getch()
 
 #define NEWLINE '\r'
 #else

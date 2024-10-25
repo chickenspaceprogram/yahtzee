@@ -30,10 +30,10 @@
     <ClCompile Include="ui.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="syscalls.c">
+    <ClCompile Include="menu.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="menu.c">
+    <ClCompile Include="terminal.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -50,13 +50,13 @@
     <ClInclude Include="ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="escape_codes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="syscalls.h">
+    <ClInclude Include="escape-codes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="terminal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
