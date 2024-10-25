@@ -1,0 +1,67 @@
+--------------------------------------------------------------------------------
+YAHTZEE RULES
+--------------------------------------------------------------------------------
+
+If you've already played Yahtzee, read through `1) QUICK START` for information
+on this particular implementation of the game.
+
+If you haven't played Yahtzee, read through `2) GAME RULES` first, then read
+`1) QUICK START`.
+
+--------------------------------------------------------------------------------
+1) QUICK START
+--------------------------------------------------------------------------------
+
+Yahtzee is a dice game, where you get points by using dice that you roll to make
+scoring combinations.
+
+To start, select `2 : Start a game of Yahtzee` from the Main Menu, then press
+[Enter]. Alternately, if you want to leave, select `3 : Exit`. 
+
+After selecting option 2, you will be shown your current score, and you can
+press any key to continue. Then, your dice will be rolled. You can select the
+dice you don't want to roll, and either press [Space] to reroll the rest or
+[Enter] to stop rolling the dice and score your current roll, if you're already
+happy with your rolls.
+
+Then, a menu will be displayed, and you can select the score combination you
+want to use the dice towards. You'll then be shown a screen displaying your
+score, and you can press any key to let the game continue and allow the other
+player to have their turn.
+
+You can only select each combination once, so choose wisely! Once both players
+run out of combinations to choose, their scores will be displayed and the game
+will end.
+
+--------------------------------------------------------------------------------
+2) GAME RULES
+--------------------------------------------------------------------------------
+
+Each game of Yahtzee is composed of 13 turns. In each turn, you have 5 dice that
+you can roll up to 3 times. After each roll, you can select which dice you'd 
+like to keep, and you can reroll the rest. Your goal is to get one of 13 
+combinations (described below) that can earn you points. At the end of the game,
+the player with the most points wins.
+
+Scoring combinations:
+
++-----------------+-------------------------------------+-----------------+
+|      Name       |             Description             |      Score      |
++-----------------+-------------------------------------+-----------------+
+|    Sum of 1s    |        Sum of all 1s rolled         |    Sum of 1s    |
+|    Sum of 2s    |        Sum of all 2s rolled         |    Sum of 2s    |
+|    Sum of 3s    |        Sum of all 3s rolled         |    Sum of 3s    |
+|    Sum of 4s    |        Sum of all 4s rolled         |    Sum of 4s    |
+|    Sum of 5s    |        Sum of all 5s rolled         |    Sum of 5s    |
+|    Sum of 6s    |        Sum of all 6s rolled         |    Sum of 6s    |
+| Three-of-a-kind |      3 dice with the same face      | Sum of all dice |
+| Four-of-a-kind  |      4 dice with the same face      | Sum of all dice |
+|   Full House    |   One pair as well as 3 of a kind   |       25        |
+| Small Straight  |        A sequence of 4 dice         |       30        |
+| Large Straight  |        A sequence of 5 dice         |       40        |
+|     Yahtzee     |      5 dice with the same face      |       50        |
+|     Chance      | Can be used on any sequence of dice | Sum of all dice |
++-----------------+-------------------------------------+-----------------+
+
+
+Press `q` to exit . . .
