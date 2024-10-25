@@ -24,10 +24,14 @@ int main(void) {
 		CLEAR_SCREEN();
 		switch(selection) {
 			case 1:
+#ifdef _WIN32
 				HIDE_CURSOR();
 				print_file("rules.txt", 0);
 				(void) GETCH(); // just used to pause prgm execution
 				SHOW_CURSOR();
+#else
+				system("less rules.txt"); // `less` already exists and is prettier than just printing and waiting for user input
+#endif
 				break;
 			case 2:
 				play_yahtzee_game();
