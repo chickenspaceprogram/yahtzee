@@ -129,7 +129,7 @@ int menu(option *options, char *end_string, int num_options) {
     
     while (keypress != NEWLINE && keypress != EOF) {
         keypress = GETCH();
-        if (keypress == '\x1B') { // if keypress is an escape char, the user has pressed an arrow key
+        if (keypress == ESC) { // if keypress is an escape char, the user has pressed an arrow key
             keypress = handle_escape_sequences();
         }
         switch (keypress) {
