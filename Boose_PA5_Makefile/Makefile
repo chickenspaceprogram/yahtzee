@@ -33,7 +33,7 @@ build: $(ALL_OBJS)
 	$(CC) $^ -o $(BIN)/$(NAME)
 
 # this is a very hacky way to put all of the text files in the right places, oh well
-$(FILE_DESTS):
+$(FILE_DESTS): $(SRC)/$(FILE_DESTS)
 	mkdir -p $(dir $@)
 	cp $(SRC)/$@ $@
 
@@ -55,6 +55,7 @@ clean:
 	rm -rf target
 	rm -f $(NAME).zip
 	rm -f Boose_PA5
+	rm -f rules.txt
 
 # running executable
 run: all
