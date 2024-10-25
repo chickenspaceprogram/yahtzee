@@ -171,8 +171,9 @@ int menu(option *options, char *end_string, int num_options) {
 }
 
 int handle_escape_sequences(void) {
+    int second_char;
 #ifndef _WIN32
-    int first_char = GETCH(), second_char;
+    int first_char = GETCH();
     if (first_char != '[') {
         ungetc(first_char, stdin);
         return ESC;
