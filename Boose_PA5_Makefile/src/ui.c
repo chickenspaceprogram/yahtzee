@@ -18,7 +18,7 @@ void print_file(char *filename, int clear_screen) {
 	if (input == NULL) {
 		printf("An error occurred while loading the file `%s`.\n\nPress any key to continue . . . ", filename);
 		HIDE_CURSOR();
-		GETCH();
+		PAUSE();
 		SHOW_CURSOR();
 		return;
 	}
@@ -126,7 +126,7 @@ int roll_selector(int *dice, int *should_reroll, int turn_num) {
 
 			printf("\n\n\n\n\n\n\nRoll saved. Press any key to continue . . . "); // i shouldn't have to do this many newlines, but i do for some unknown reason
 			HIDE_CURSOR();
-			GETCH();
+			PAUSE();
 			SHOW_CURSOR();
 			CLEAR_SCREEN();
 			return 0;

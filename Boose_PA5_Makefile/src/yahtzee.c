@@ -12,6 +12,7 @@ void play_yahtzee_game(void) {
 	player_info player2;
 	init_player_info(&player1);
 	init_player_info(&player2);
+	int player1_score = 0, player2_score = 0;
 
 	for (int i = 1; i < 14; ++i) {
 		start_turn(&player1, i, "Player 1");
@@ -21,6 +22,24 @@ void play_yahtzee_game(void) {
 		init_dice(&(player1.player_dice), 5);
 		init_dice(&(player2.player_dice), 5);
 	}
+
+	player1_score = sum_array(player1.scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY);
+	player2_score = sum_array(player2.scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY);
+	CLEAR_SCREEN();
+	HIDE_CURSOR();
+	printf("\nThe game has ended!\n\n");
+	if (player1_score > player2_score) {
+		printf("Player 1 won the game!\n\n");
+	}
+	else if (player1_score == player2_score) {
+		printf("Both players tied!\n\n");
+	}
+	else {
+		printf("Player 2 won the game!\n\n");
+	}
+	printf("Player 1's score was: %d\nPlayer 2's score was: %d\n\n\n", player1_score, player2_score);
+	printf("Press any key to continue . . . ");
+	PAUSE();
 }
 
 void play_yahtzee_turn(player_info *player) {
@@ -39,7 +58,7 @@ void play_yahtzee_turn(player_info *player) {
 	CLEAR_SCREEN();
 	printf("Your score is now %d. Press any key to continue . . . ", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
 	HIDE_CURSOR();
-	GETCH();
+	PAUSE();
 	SHOW_CURSOR();
 }
 
@@ -48,7 +67,7 @@ void start_turn(player_info *player, int num_turns, char *player_name) {
 	printf("Hi %s! It's currently turn %d.\n", player_name, num_turns);
 	printf("Your current score is: %d\n\nPress any key to continue . . .", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
 	HIDE_CURSOR();
-	GETCH();
+	PAUSE();
 	SHOW_CURSOR();
 }
 
