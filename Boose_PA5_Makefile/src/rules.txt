@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+YAHTZEE RULES
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+1) INTRODUCTION / QUICK START
+--------------------------------------------------------------------------------
+
+Yahtzee is a dice game, where you get points by using dice that you roll to make
+scoring combinations.
+
+To start, select `2 : Start a game of Yahtzee` from the Main Menu, then press
+[Enter]. Alternately, if you want to leave, select `3 : Exit`. 
+
+After selecting option 2, you will be shown your current score, and you can
+press any key to continue. Then, your dice will be rolled. You can select the
+dice you don't want to roll, and either press [Space] to reroll the rest or
+[Enter] to stop rolling the dice and score your current roll, if you're already
+happy with your rolls.
+
+Then, a menu will be displayed, and you can select the score combination you
+want to use the dice towards. You'll then be shown a screen displaying your
+score, and you can press any key to let the game continue and allow the other
+player to have their turn.
+
+You can only select each combination once, so choose wisely! Once both players
+run out of combinations to choose, their scores will be displayed and the game
+will end.
+
+--------------------------------------------------------------------------------
+2) GAME RULES
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+Press any key to continue . . .
