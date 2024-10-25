@@ -7,6 +7,18 @@
 #define RIGHT_ARROW 0x143
 #define LEFT_ARROW  0x144
 
+#ifdef _WIN32
+#define UP_CHAR     'H'
+#define DOWN_CHAR   'P'
+#define RIGHT_CHAR  'M'
+#define LEFT_CHAR   'K'
+#else
+#define UP_CHAR     'A'
+#define DOWN_CHAR   'B'
+#define RIGHT_CHAR  'C'
+#define LEFT_CHAR   'D'
+#endif
+
 // functions are declared as static in the .c file to make them private
 
 /**
@@ -165,16 +177,16 @@ int handle_escape_sequences(void) {
         return ESC;
     }
     switch (second_char = GETCH()) {
-        case 'A':
+        case UP_CHAR:
             return UP_ARROW;
             break;
-        case 'B':
+        case DOWN_CHAR:
             return DOWN_ARROW;
             break;
-        case 'C':
+        case RIGHT_CHAR:
             return RIGHT_ARROW;
             break;
-        case 'D':
+        case LEFT_CHAR:
             return LEFT_ARROW;
             break;
         default:
