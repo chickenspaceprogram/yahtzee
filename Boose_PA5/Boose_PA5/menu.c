@@ -121,7 +121,7 @@ int menu(option *options, char *end_string, int num_options) {
             keypress = handle_escape_sequences();
         }
         switch (keypress) {
-            case UP_ARROW: case LEFT_ARROW:
+            case UP_ARROW: case LEFT_ARROW: case 'k':
                 // clearing row, finding the row to move to, and reprinting the new row
                 temp = up_row(options, selection);
                 if (temp != selection) {
@@ -131,7 +131,7 @@ int menu(option *options, char *end_string, int num_options) {
                     print_row(options, selection);
                 }
                 break;
-            case DOWN_ARROW: case RIGHT_ARROW:
+            case DOWN_ARROW: case RIGHT_ARROW: case 'j':
                 temp = down_row(options, num_options, selection);
                 if (temp != selection) {
                     clear_row(options, selection);

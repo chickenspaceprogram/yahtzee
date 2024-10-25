@@ -48,7 +48,7 @@ int select_from_menu(int *scores, int *dice_freqs) {
 
 	// broken up into separate statements to make it sorta readable
 	HIDE_CURSOR();
-	printf("Please select an option by pressing the key next to it or using the arrow keys.\n\nThen, press [Enter] to save your selection.\n\n");
+	printf("Please select an option by pressing the key next to it, using the arrow keys, or pressing k or j.\n\nThen, press [Enter] to save your selection.\n\n");
 	printf("  "DRAW_MODE"lqqqqqqqqqqqqqqqqqqqqqqwqqqqqqqqk\n"ASCII_MODE);
 	printf("  "DRAW_MODE"x"ASCII_MODE" Combinations:        "DRAW_MODE"x"ASCII_MODE" Score: "DRAW_MODE"x\n"ASCII_MODE);
 	printf("  "DRAW_MODE"tqqqqqqqqqqqqqqqqqqqqqqnqqqqqqqqu\n"ASCII_MODE);
