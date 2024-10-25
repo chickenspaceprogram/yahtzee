@@ -2,7 +2,7 @@
 #define ASCII_DICE
 
 #include <stdio.h>
-#include "escape_codes.h"
+#include "escape-codes.h"
 
 
 /*

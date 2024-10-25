@@ -1,5 +1,15 @@
 #include "ui.h"
-#include "syscalls.h"
+#include "terminal.h"
+
+/**
+ * Function name: num_to_str
+ * Date created: 10/24/2024
+ * Date last modified: 10/24/2024
+ * Description: Converts the two-digit number `num` to ASCII characters, padded on the left by spaces, and writes those characters to `string`.
+ * Inputs: 
+ * Outputs: none
+ */
+static void num_to_str(char *string, int num);
 
 void print_file(char *filename, int clear_screen) {
 
@@ -8,11 +18,11 @@ void print_file(char *filename, int clear_screen) {
 	if (input == NULL) {
 		printf("An error occurred while loading the file `%s`.\n\nPress any key to continue . . . ", filename);
 		HIDE_CURSOR();
-		GETCH();
+		PAUSE();
 		SHOW_CURSOR();
 		return;
 	}
-	// using a buffer looked marginally nicer than using getc() and putc() character-by-character
+	
 	// allocating it on the stack is probably bad practice since the buffer's relatively large, but I'm lazy and this worked
 	char buffer[PAGE_SIZE]; // This could be set to all zeroes but it's unnecessary and (probably) would be marginally slower
 	int chars_read = 0;
@@ -34,76 +44,46 @@ void print_file(char *filename, int clear_screen) {
 	fclose(input);
 }
 
-void print_dice_combinations(int *scores, int *dice_freqs) {
-	int roll_score = 0;
+int select_from_menu(int *scores, int *dice_freqs) {
 
-	// having an array of messages is a lot neater than a bunch of if statements
-	const char *one_digit_option_messages[] = { // made const since it won't change
-		"| Combinations:         | Score: |\n", // this is something instead of NULL since it was easy to make it line up nicely when writing
-		"|  1 : Sum of 1s        |    %d   |\n",
-		"|  2 : Sum of 2s        |    %d   |\n",
-		"|  3 : Sum of 3s        |    %d   |\n",
-		"|  4 : Sum of 4s        |    %d   |\n",
-		"|  5 : Sum of 5s        |    %d   |\n",
-		"|  6 : Sum of 6s        |    %d   |\n",
-		"|  7 : Three-of-a-kind  |    %d   |\n",
-		"|  8 : Four-of-a-kind   |    %d   |\n",
-		"|  9 : Full House       |    %d   |\n",
-		"| 10 : Small Straight   |    %d   |\n",
-		"| 11 : Large Straight   |    %d   |\n",
-		"| 12 : Yahtzee          |    %d   |\n",
-		"| 13 : Chance           |    %d   |\n"
+	// broken up into separate statements to make it sorta readable
+	HIDE_CURSOR();
+	printf("Please select an option by pressing the key next to it or using the arrow keys.\n\nThen, press [Enter] to save your selection.\n\n");
+	printf("  "DRAW_MODE"lqqqqqqqqqqqqqqqqqqqqqqwqqqqqqqqk\n"ASCII_MODE);
+	printf("  "DRAW_MODE"x"ASCII_MODE" Combinations:        "DRAW_MODE"x"ASCII_MODE" Score: "DRAW_MODE"x\n"ASCII_MODE);
+	printf("  "DRAW_MODE"tqqqqqqqqqqqqqqqqqqqqqqnqqqqqqqqu\n"ASCII_MODE);
+
+
+	option dice_menu_options[NUM_OPTIONS] = {
+		{.selection_char = '\0', .msg = "\0", .is_valid = 0},
+		{.selection_char = '1', .msg = DRAW_MODE"x"ASCII_MODE" 1 : Sum of 1s        "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '2', .msg = DRAW_MODE"x"ASCII_MODE" 2 : Sum of 2s        "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '3', .msg = DRAW_MODE"x"ASCII_MODE" 3 : Sum of 3s        "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '4', .msg = DRAW_MODE"x"ASCII_MODE" 4 : Sum of 4s        "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '5', .msg = DRAW_MODE"x"ASCII_MODE" 5 : Sum of 5s        "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '6', .msg = DRAW_MODE"x"ASCII_MODE" 6 : Sum of 6s        "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '7', .msg = DRAW_MODE"x"ASCII_MODE" 7 : Three-of-a-kind  "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '8', .msg = DRAW_MODE"x"ASCII_MODE" 8 : Four-of-a-kind   "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '9', .msg = DRAW_MODE"x"ASCII_MODE" 9 : Full House       "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = '0', .msg = DRAW_MODE"x"ASCII_MODE" 0 : Small Straight   "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = 'a', .msg = DRAW_MODE"x"ASCII_MODE" a : Large Straight   "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = 'b', .msg = DRAW_MODE"x"ASCII_MODE" b : Yahtzee          "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
+		{.selection_char = 'c', .msg = DRAW_MODE"x"ASCII_MODE" c : Chance           "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"}
 	};
-	const char *two_digit_option_messages[] = { // made const since it won't change
-		"",
-		"", // you can't have a sum of 1s that is > 9, so we can save a few bytes
-		"|  2 : Sum of 2s        |   %d   |\n",
-		"|  3 : Sum of 3s        |   %d   |\n",
-		"|  4 : Sum of 4s        |   %d   |\n",
-		"|  5 : Sum of 5s        |   %d   |\n",
-		"|  6 : Sum of 6s        |   %d   |\n",
-		"|  7 : Three-of-a-kind  |   %d   |\n",
-		"|  8 : Four-of-a-kind   |   %d   |\n",
-		"|  9 : Full House       |   %d   |\n",
-		"| 10 : Small Straight   |   %d   |\n",
-		"| 11 : Large Straight   |   %d   |\n",
-		"| 12 : Yahtzee          |   %d   |\n",
-		"| 13 : Chance           |   %d   |\n"
-	};
-	printf("Please select your preferred option by entering the corresponding number:\n\n");
-	printf("----------------------------------\n");
-	printf("%s", one_digit_option_messages[0]);
-	printf("----------------------------------\n");
-	// looping through and printing every valid combination
-	for (int i = 1; i < 14; ++i) {
+
+	for (int i = 1; i < NUM_OPTIONS; ++i) {
 		if (scores[i] == -1) {
-			roll_score = get_dice_score(dice_freqs, (score_combinations) i);
-			if (roll_score >= 10) {
-				printf(two_digit_option_messages[i], roll_score);
-			}
-			else {
-				printf(one_digit_option_messages[i], roll_score);
-			}
+			dice_menu_options[i].is_valid = 1;
 		}
-	}
-	printf("----------------------------------\n");
-}
-
-int select_dice_combination(int *scores) {
-	int selection = 0;
-
-	// keep looping until the user enters a valid dice combination, at which point we return
-	while (1) {
-		printf("\nYour selection: ");
-		(void) scanf("%d", &selection);
-		if (selection >= 1 && selection <= 14) {
-			if (scores[selection] == -1) {
-				getchar(); // cleaning up trailing newline
-				return selection;
-			}
+		else {
+			dice_menu_options[i].is_valid = 0;
 		}
-		printf("Your selection was invalid. Please try again.\n");
+		// puts the score for each combination in the right place
+		num_to_str(&(dice_menu_options[i].msg[SCORE_POS]), get_dice_score(dice_freqs, (score_combinations) i));
 	}
+	int selection = menu(dice_menu_options, DRAW_MODE"  mqqqqqqqqqqqqqqqqqqqqqqvqqqqqqqqj"ASCII_MODE, NUM_OPTIONS);
+	SHOW_CURSOR();
+	return selection;
 }
 
 int roll_selector(int *dice, int *should_reroll, int turn_num) {
@@ -115,7 +95,7 @@ int roll_selector(int *dice, int *should_reroll, int turn_num) {
 
 
 	// telling user what to do
-	printf("\n\n\n\n\nCurrently on roll %d.\n\nPress the number corresponding to a die to toggle whether it is to be rolled.\nTo reroll dice, press [Space], and to end your turn, press [Enter].\n", turn_num);
+	printf("\n\n\n\n\nCurrently on roll %d of 3.\n\nPress the number corresponding to a die to toggle whether it is to be rolled.\nTo reroll dice, press [Space], and to end your turn, press [Enter].\n", turn_num);
 
 	// saving position of and hiding cursor
 	SAVE_CURSOR();
@@ -146,7 +126,7 @@ int roll_selector(int *dice, int *should_reroll, int turn_num) {
 
 			printf("\n\n\n\n\n\n\nRoll saved. Press any key to continue . . . "); // i shouldn't have to do this many newlines, but i do for some unknown reason
 			HIDE_CURSOR();
-			GETCH();
+			PAUSE();
 			SHOW_CURSOR();
 			CLEAR_SCREEN();
 			return 0;
@@ -212,3 +192,15 @@ void clear_no_roll(int die_num) {
 	printf("         ");
 }
 
+/* Private functions */
+
+static void num_to_str(char *string, int num) {
+	// this could've been a for loop, but this was easier and fit the use case
+	if (num / 10 == 0) {
+		string[0] = ' ';
+	}
+	else {
+		string[0] = num / 10 + '0';
+	}
+	string[1] = num % 10 + '0';
+}
