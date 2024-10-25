@@ -28,7 +28,7 @@ Please note that some of the functions in this file were originally written for 
 /**
 * Function name: print_file
 * Date created: 09/25/2024
-* Date last modified: 10/10/2024
+* Date last modified: 10/25/2024
 * Description:	Prints the contents of a file to stdout.
 *				This is used to print the rules and the main menu because a bunch of printf() statements would've been extremely ugly
 * Inputs:

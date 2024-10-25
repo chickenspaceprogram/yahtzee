@@ -22,7 +22,7 @@ void print_file(char *filename, int clear_screen) {
 		SHOW_CURSOR();
 		return;
 	}
-	// using a buffer looked marginally nicer than using getc() and putc() character-by-character
+	
 	// allocating it on the stack is probably bad practice since the buffer's relatively large, but I'm lazy and this worked
 	char buffer[PAGE_SIZE]; // This could be set to all zeroes but it's unnecessary and (probably) would be marginally slower
 	int chars_read = 0;

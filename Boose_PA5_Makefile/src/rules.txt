@@ -2,8 +2,14 @@
 YAHTZEE RULES
 --------------------------------------------------------------------------------
 
+If you've already played Yahtzee, read through `1) QUICK START` for information
+on this particular implementation of the game.
+
+If you haven't played Yahtzee, read through `2) GAME RULES` first, then read
+`1) QUICK START`.
+
 --------------------------------------------------------------------------------
-1) INTRODUCTION / QUICK START
+1) QUICK START
 --------------------------------------------------------------------------------
 
 Yahtzee is a dice game, where you get points by using dice that you roll to make
@@ -30,6 +36,32 @@ will end.
 --------------------------------------------------------------------------------
 2) GAME RULES
 --------------------------------------------------------------------------------
+
+Each game of Yahtzee is composed of 13 turns. In each turn, you have 5 dice that
+you can roll up to 3 times. After each roll, you can select which dice you'd 
+like to keep, and you can reroll the rest. Your goal is to get one of 13 
+combinations (described below) that can earn you points. At the end of the game,
+the player with the most points wins.
+
+Scoring combinations:
+
++-----------------+-------------------------------------+-----------------+
+|      Name       |             Description             |      Score      |
++-----------------+-------------------------------------+-----------------+
+|    Sum of 1s    |        Sum of all 1s rolled         |    Sum of 1s    |
+|    Sum of 2s    |        Sum of all 2s rolled         |    Sum of 2s    |
+|    Sum of 3s    |        Sum of all 3s rolled         |    Sum of 3s    |
+|    Sum of 4s    |        Sum of all 4s rolled         |    Sum of 4s    |
+|    Sum of 5s    |        Sum of all 5s rolled         |    Sum of 5s    |
+|    Sum of 6s    |        Sum of all 6s rolled         |    Sum of 6s    |
+| Three-of-a-kind |      3 dice with the same face      | Sum of all dice |
+| Four-of-a-kind  |      4 dice with the same face      | Sum of all dice |
+|   Full House    |   One pair as well as 3 of a kind   |       25        |
+| Small Straight  |        A sequence of 4 dice         |       30        |
+| Large Straight  |        A sequence of 5 dice         |       40        |
+|     Yahtzee     |      5 dice with the same face      |       50        |
+|     Chance      | Can be used on any sequence of dice | Sum of all dice |
++-----------------+-------------------------------------+-----------------+
 
 
 --------------------------------------------------------------------------------
