@@ -20,6 +20,19 @@
 #define LEFT_CHAR   'D'
 #endif
 
+/**
+ * Function name: handle_keypress
+ * Date created: 10/25/2024
+ * Date last modified: 10/25/2024
+ * Description: Handles redisplaying the menu after the user presses a key.
+ * Inputs: 
+ * `options` : A struct containing all the options
+ * `option_rows` : An array mapping each displayed option to the row on the terminal on which it's displayed (relative to the topmost displayed option)
+ * `num_options` : How many options there are
+ * `keypress` : The key that the user pressed
+ * `selection` : The user's previous selection
+ * Outputs: The user's current selection
+ */
 int handle_keypress(option *options, int *option_rows, int num_options, int keypress, int selection);
 
 /**
@@ -298,7 +311,6 @@ int print_rows(option *options, int *option_row_nums, int num_options) {
     int rows_printed = 0;
     for (int i = 0; i < num_options; ++i) {
         if (options[i].is_valid) {
-            
             // option_row_nums basically serves as a lookup table to find which row of the terminal a specific option was printed on
             option_row_nums[i] = rows_printed;
             clear_row(options, i); // function is misleadingly named, this just prints a row without a > at the start.
