@@ -1,7 +1,8 @@
 #include "dice.h"
 
-void init_dice(dice *the_dice, int num_dice) {
-	for (int i = 1; i < (num_dice + 1); ++i) {
+void init_dice(dice *the_dice) {
+	// setting should_reroll to 1 for every die
+	for (int i = 1; i < (NUM_DICE + 1); ++i) {
 		the_dice->should_reroll[i] = 1;
 	}
 }

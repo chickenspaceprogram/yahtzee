@@ -67,27 +67,37 @@ void init_player_info(player_info *player) {
 	for (int i = START_SCORE_ARRAY; i < LEN_SCORE_ARRAY; ++i) {
 		player->scores[i] = -1;
 	}
-	init_dice(&(player->player_dice), 5);
+	init_dice(&(player->player_dice));
 }
 
 void play_yahtzee_game(void) {
+	// declaring player info structs and initializing them
 	player_info player1;
 	player_info player2;
 	init_player_info(&player1);
 	init_player_info(&player2);
+
 	int player1_score = 0, player2_score = 0;
 
 	for (int i = 1; i < 14; ++i) {
+		// playing through player 1's turn
 		start_turn(&player1, i, "Player 1");
 		play_yahtzee_turn(&player1);
+
+		// playing through player 2's turn
 		start_turn(&player2, i, "Player 2");
 		play_yahtzee_turn(&player2);
-		init_dice(&(player1.player_dice), 5);
-		init_dice(&(player2.player_dice), 5);
+
+		// resetting the should_reroll values in each dice struct
+		init_dice(&(player1.player_dice));
+		init_dice(&(player2.player_dice));
 	}
 
+	// getting each player's scores
 	player1_score = sum_array(player1.scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY);
 	player2_score = sum_array(player2.scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY);
+
+	// printing the game end messages
 	CLEAR_SCREEN();
 	HIDE_CURSOR();
 	printf("\nThe game has ended!\n\n");
@@ -103,24 +113,34 @@ void play_yahtzee_game(void) {
 	printf("Player 1's score was: %d\nPlayer 2's score was: %d\n\n\n", player1_score, player2_score);
 	printf("Press any key to continue . . . ");
 	PAUSE();
+	SHOW_CURSOR();
 }
 
 void play_yahtzee_turn(player_info *player) {
 	int rolls = 0, continue_turn = 1, selection = 0;
+
+	// process the rolls until the player decides to stop the turn or they run out of turns
 	do {
 		process_roll(&(player->player_dice));
 		continue_turn = roll_selector(player->player_dice.values, player->player_dice.should_reroll, ++rolls);
 
 	} while (rolls < 3 && continue_turn);
 
+	// displaying the dice the player rolled
 	printf("The dice you rolled are:\n\n");
 	print_die_faces(player->player_dice.values, 5);
 	printf("\n");
+
+	// letting player select an option from the menu
 	selection = select_from_menu(player->scores, player->player_dice.frequencies);
+
+	// saving the player's score
 	player->scores[selection] = get_dice_score(player->player_dice.frequencies, (score_combinations) selection);
+
+	// printing info for the player
 	CLEAR_SCREEN();
-	printf("Your score is now %d. Press any key to continue . . . ", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
 	HIDE_CURSOR();
+	printf("Your score is now %d. Press any key to continue . . . ", sum_array(player->scores, START_SCORE_ARRAY, LEN_SCORE_ARRAY));
 	PAUSE();
 	SHOW_CURSOR();
 }
@@ -138,7 +158,7 @@ int get_dice_score(int *dice_freqs, score_combinations selection) {
 	int total = 0, straight_len = 0;
 	switch (selection) {
 		case SUM_1: case SUM_2: case SUM_3: case SUM_4: case SUM_5: case SUM_6:
-			total = dice_freqs[selection] * selection; // the fact that C enums are just numbers is quite convenient here
+			total = dice_freqs[selection] * selection; // the fact that C enums are just numbers is quite convenient here, this would be annoying in Rust
 			break;
 		case THREE_KIND:
 			if (find_max_freq(dice_freqs) >= 3) {
@@ -155,13 +175,13 @@ int get_dice_score(int *dice_freqs, score_combinations selection) {
 				total = 25;
 			}
 			break;
-		case SMALL_STRAIGHT: // bug
+		case SMALL_STRAIGHT:
 			straight_len = get_straight_length(dice_freqs);
 			if (straight_len >= 4) {
 				total = 30;
 			}
 			break;
-		case LARGE_STRAIGHT: // bug
+		case LARGE_STRAIGHT:
 			straight_len = get_straight_length(dice_freqs);
 			if (straight_len >= 5) {
 				total = 40;
@@ -185,17 +205,21 @@ int get_dice_score(int *dice_freqs, score_combinations selection) {
 
 int get_straight_length(int *dice_freqs) {
 	int longest_straight_len = 0, current_straight_len = 0;
+
 	for (int i = 1; i < 7; ++i) {
+		// if there is at least one die with the current value, increase the straight length
 		if (dice_freqs[i]) {
 			++current_straight_len;
 		}
 		else {
+			// otherwise, the straight has ended, so figure out whether it's the longest
 			if (current_straight_len > longest_straight_len) {
 				longest_straight_len = current_straight_len;
 			}
 			current_straight_len = 0;
 		}
 	}
+	// we could've ended our loop on a straight, so once again, check how long it is
 	if (current_straight_len > longest_straight_len) {
 		longest_straight_len = current_straight_len;
 	}

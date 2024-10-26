@@ -7,7 +7,7 @@
 #define RIGHT_ARROW 0x143
 #define LEFT_ARROW  0x144
 
-// *nix and Windows format arrow key escape sequences differently
+// Unix and Windows format arrow key escape sequences differently
 #ifdef _WIN32
 #define UP_CHAR     'H'
 #define DOWN_CHAR   'P'
@@ -20,11 +20,13 @@
 #define LEFT_CHAR   'D'
 #endif
 
+int handle_keypress(option *options, int *option_rows, int num_options, int keypress, int selection);
+
 /**
  * Function name: find_item
  * Date created: 10/22/2024
  * Date last modified: 10/22/2024
- * Description: 
+ * Description: Finds the option that can be selectd by pressing `item_character`.
  * Inputs: 
  * `options` : An array of `option` structs containing the various menu options.
  * `num_options` : The total number of options.
@@ -124,60 +126,34 @@ static int handle_escape_sequences(void);
 
 int menu(option *options, char *end_string, int num_options) {
     int keypress = 0;
-    int selection = down_row(options, num_options, -1), temp = 0; // finding first valid option
+    int selection = down_row(options, num_options, -1), num_rows_printed = 0; // finding first valid option
     int option_rows[ARRAY_SIZE] = {0};
     
     if (selection == -1) { // in this case, there are no valid options
         return selection;
     }
 
-    // printing all the valid messages
-    temp = print_rows(options, option_rows, num_options);
-    temp += print_end_string(end_string);
+    // printing all the valid messages, storing how many were printed
+    num_rows_printed = print_rows(options, option_rows, num_options);
 
-    CURSOR_UP(temp);
+    // printing end string, adding the length of it to the number of valid messages printed
+    num_rows_printed += print_end_string(end_string);
+
+    // moving cursor back up to the start and to column 1
+    CURSOR_UP(num_rows_printed);
     CURSOR_TO_COL(1);
+
+
     print_row(options, selection); // reprinting the first row with the selector marker
     
     while (keypress != NEWLINE && keypress != EOF) {
-        keypress = GETCH();
-        if (keypress == ESC) { // if keypress is an escape char, the user has pressed an arrow key
+        keypress = GETCH(); // gets keypress without waiting for user to press [Enter]
+
+        if (keypress == ESC) { // if keypress is an escape char, the user has pressed an arrow key, so we handle that now
             keypress = handle_escape_sequences();
         }
-        switch (keypress) {
-            case UP_ARROW: case LEFT_ARROW: case 'k':
-                // clearing row, finding the row to move to, and reprinting the new row
-                temp = up_row(options, selection);
-                if (temp != selection) {
-                    clear_row(options, selection);
-                    selection = temp;
-                    CURSOR_UP(1);
-                    print_row(options, selection);
-                }
-                break;
-            case DOWN_ARROW: case RIGHT_ARROW: case 'j':
-                temp = down_row(options, num_options, selection);
-                if (temp != selection) {
-                    clear_row(options, selection);
-                    selection = temp;
-                    CURSOR_DOWN(1);
-                    print_row(options, selection);
-                }
-                break;
-            default:
-                if ((temp = find_item(options, num_options, keypress, selection)) != selection) {
-                    clear_row(options, selection);
-                    if (option_rows[temp] > option_rows[selection]) {
-                        CURSOR_DOWN(option_rows[temp] - option_rows[selection]);
-                    }
-                    else {
-                        CURSOR_UP(option_rows[selection] - option_rows[temp]);
-                    }
-                    selection = temp;
-                    print_row(options, selection);
-                }
-                break;
-        }
+
+        selection = handle_keypress(options, option_rows, num_options, keypress, selection);
     }
     return selection;
 }
@@ -223,7 +199,60 @@ int find_item(option *options, int num_options, char item_character, int current
     return current_selection;
 }
 
+
 /* Private functions: */
+
+
+int handle_keypress(option *options, int *option_rows, int num_options, int keypress, int selection) {
+    int next_selection = 0;
+
+    // this is a pretty messy switch-case, sorry
+    switch (keypress) {
+        case UP_ARROW: case LEFT_ARROW: case 'k': // 'k' and 'j' are Vim keybindings, they're included here because why not
+            // finding the row to move to
+            next_selection = up_row(options, selection);
+            if (next_selection != selection) {
+                // clearing current row and printing the new one at the desired location
+                clear_row(options, selection);
+                selection = next_selection;
+                CURSOR_UP(1);
+                print_row(options, selection);
+            }
+            break;
+        case DOWN_ARROW: case RIGHT_ARROW: case 'j':
+            next_selection = down_row(options, num_options, selection);
+            if (next_selection != selection) {
+                clear_row(options, selection);
+                selection = next_selection;
+                CURSOR_DOWN(1);
+                print_row(options, selection);
+            }
+            break;
+        default:
+            // trying to find an item corresponding to the key the user pressed, if we don't, find_item will just return selection back
+            next_selection = find_item(options, num_options, keypress, selection);
+
+            // if the user pressed a valid key, we do stuff
+            if (next_selection != selection) {
+                // clear current row
+                clear_row(options, selection);
+
+                // move cursor down or up by the required amount
+                if (option_rows[next_selection] > option_rows[selection]) {
+                    CURSOR_DOWN(option_rows[next_selection] - option_rows[selection]);
+                }
+                else {
+                    CURSOR_UP(option_rows[selection] - option_rows[next_selection]);
+                }
+
+                // reprint/highlight the row we moved to
+                selection = next_selection;
+                print_row(options, selection);
+            }
+            break;
+    }
+    return selection;
+}
 
 
 void clear_row(option *options, int option_to_print) {
@@ -269,8 +298,10 @@ int print_rows(option *options, int *option_row_nums, int num_options) {
     int rows_printed = 0;
     for (int i = 0; i < num_options; ++i) {
         if (options[i].is_valid) {
+            
+            // option_row_nums basically serves as a lookup table to find which row of the terminal a specific option was printed on
             option_row_nums[i] = rows_printed;
-            clear_row(options, i); // function is misleadingly named, sorry. this just prints a row without a > at the start.
+            clear_row(options, i); // function is misleadingly named, this just prints a row without a > at the start.
             putchar('\n');
             ++rows_printed;
         }

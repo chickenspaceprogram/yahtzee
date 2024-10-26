@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#define NUM_DICE 5 // the number of dice in a game of Yahtzee
+
 /*
 Some of the code in this file was reused from PA 4.
 */
@@ -17,12 +19,21 @@ Some of the code in this file was reused from PA 4.
 */
 typedef struct dice dice;
 struct dice {
-	int values[6];
-	int should_reroll[6];
+	int values[NUM_DICE + 1];
+	int should_reroll[NUM_DICE + 1];
 	int frequencies[7];
 };
 
-void init_dice(dice *the_dice, int num_dice);
+/**
+ * Function name: init_dice
+ * Date created: 10/11/2024
+ * Date last modified: 10/11/2024
+ * Description: Resets the should_reroll value of every die to 1.
+ * Inputs:
+ * `the_dice` : A pointer to a `dice` struct containing information about the dice.
+ * Outputs: none
+ */
+void init_dice(dice *the_dice);
 
 /**
 * Function name: seed_rand

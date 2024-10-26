@@ -53,7 +53,7 @@ int select_from_menu(int *scores, int *dice_freqs) {
 	printf("  "DRAW_MODE"x"ASCII_MODE" Combinations:        "DRAW_MODE"x"ASCII_MODE" Score: "DRAW_MODE"x\n"ASCII_MODE);
 	printf("  "DRAW_MODE"tqqqqqqqqqqqqqqqqqqqqqqnqqqqqqqqu\n"ASCII_MODE);
 
-
+	// creating an array containing all of the possible options the user could select
 	option dice_menu_options[NUM_OPTIONS] = {
 		{.selection_char = '\0', .msg = "\0", .is_valid = 0},
 		{.selection_char = '1', .msg = DRAW_MODE"x"ASCII_MODE" 1 : Sum of 1s        "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"},
@@ -71,6 +71,7 @@ int select_from_menu(int *scores, int *dice_freqs) {
 		{.selection_char = 'c', .msg = DRAW_MODE"x"ASCII_MODE" c : Chance           "DRAW_MODE"x"ASCII_MODE"        "DRAW_MODE"x"ASCII_MODE"\0"}
 	};
 
+	// setting the is_valid part of the option structs
 	for (int i = 1; i < NUM_OPTIONS; ++i) {
 		if (scores[i] == -1) {
 			dice_menu_options[i].is_valid = 1;
@@ -81,8 +82,11 @@ int select_from_menu(int *scores, int *dice_freqs) {
 		// puts the score for each combination in the right place
 		num_to_str(&(dice_menu_options[i].msg[SCORE_POS]), get_dice_score(dice_freqs, (score_combinations) i));
 	}
+
+	// displaying menu
 	int selection = menu(dice_menu_options, DRAW_MODE"  mqqqqqqqqqqqqqqqqqqqqqqvqqqqqqqqj"ASCII_MODE, NUM_OPTIONS);
 	SHOW_CURSOR();
+
 	return selection;
 }
 
@@ -112,6 +116,7 @@ int roll_selector(int *dice, int *should_reroll, int turn_num) {
 		selection = get_keep_die_selection(); // this function's name is atrocious, sorry
 
 		if (selection == ' ') {
+			// if user has entered a space, we fix the screen and return 1 so that they can be rerolled again
 
 			// reloading the previous position of the cursor so we can pick up where we left off before this function moved the cursor around
 			LOAD_CURSOR();
@@ -120,21 +125,24 @@ int roll_selector(int *dice, int *should_reroll, int turn_num) {
 			return 1;
 		}
 		else if (selection == NEWLINE) { // windows using \r\n for newlines is annoying
+			// if the user has pressed [Enter] we tell them that their roll has been saved, then return 0.
+
 			// reloading the previous position of the cursor so we can pick up where we left off before this function moved the cursor around
 			LOAD_CURSOR();
-			SHOW_CURSOR();
-
 			printf("\n\n\n\n\n\n\nRoll saved. Press any key to continue . . . "); // i shouldn't have to do this many newlines, but i do for some unknown reason
-			HIDE_CURSOR();
 			PAUSE();
 			SHOW_CURSOR();
 			CLEAR_SCREEN();
 			return 0;
 		}
 
+		// if the user hasn't pressed enter or newline, we know they've pressed a number key, so we do that logic here
+
+
 		// flipping the value of should_reroll since the user pressed the corresponding key
 		should_reroll[selection - '0'] = !should_reroll[selection - '0'];
 		
+		// reprinting the [NO ROLL] message at the place the user selected
 		print_whether_roll(should_reroll, selection - '0');
 	}
 
@@ -163,7 +171,7 @@ void print_whether_roll(int *should_reroll, int die_num) {
 }
 
 void print_no_roll(int die_num) {
-	// apologies, this is basically unreadable. it does work though, and i have packaged all the horrid code into a few functions instead of scattering it everywhere
+	// apologies, this is basically unreadable. it does work though
 
 	int column = COL_SIZE * die_num + SHIFT_AMT; // bit of a cursed way to get the column but hey it works
 	

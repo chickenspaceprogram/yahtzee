@@ -2,7 +2,7 @@
 
 #ifndef _WIN32
 
-// credit goes to the manpage for termios for explaining how this stuff works
+// credit goes to the manpage for termios for explaining how this stuff works, this code may be unreadable but it does at least work!
 int unix_getch(void) {
 	// declaring structs that contain the terminal information
 	struct termios prev_settings, non_canon;
