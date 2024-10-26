@@ -1,5 +1,68 @@
 #include "yahtzee.h"
 
+/* Private function declarations */
+
+/**
+ * Function name: get_straight_length
+ * Date created: 10/12/2024
+ * Date last modified: 10/12/2024
+ * Description: Finds the length of the longest straight that the user rolled.
+ * Inputs: 
+ * `dice_freqs` : An array containing the frequency with which each die was rolled.
+ * Outputs: The length of the longest straight that the user rolled.
+ */
+static int get_straight_length(int *dice_freqs);
+
+/**
+ * Function name: find_max_freq
+ * Date created: 10/12/2024
+ * Date last modified: 10/12/2024
+ * Description: Finds the number of times that the most-frequently-rolled die was rolled.
+ * Inputs: 
+ * `dice_freqs` : An array containing the frequency with which each die was rolled.
+ * Outputs: The maximum roll frequency.
+ */
+static int find_max_freq(int *dice_freqs);
+
+/**
+ * Function name: sum_dice
+ * Date created: 10/15/2024
+ * Date last modified: 10/15/2024
+ * Description: Finds the sum of the face values of all the dice.
+ * Inputs: 
+ * `dice_freqs` : An array containing the frequency with which each die was rolled.
+ * Outputs: The sum of the face values of all the dice.
+ */
+static int sum_dice(int *dice_freqs);
+
+/**
+ * Function name: sum_array
+ * Date created: 10/16/2024
+ * Date last modified: 10/18/2024
+ * Description: Sums the values in the array from `start` to `end` that are not equal to -1.
+ * Inputs: 
+ * `array` : The array to be summed.
+ * `start` : The index to start summing at (inclusive).
+ * `end` : The index to end at (exclusive.)
+ * Outputs: The sum of the values in the array
+ */
+static int sum_array(int *array, int start, int end);
+
+/**
+ * Function name: find_full_house
+ * Date created: 10/15/2024
+ * Date last modified: 10/15/2024
+ * Description: Checks whether the user has a full house.
+ * Inputs: 
+ * `dice_freqs` : An array containing the frequency with which each die was rolled.
+ * Outputs: 1 if the user has a full house, 0 otherwise
+ */
+static int find_full_house(int *dice_freqs);
+
+
+/* Public functions */
+
+
 void init_player_info(player_info *player) {
 	for (int i = START_SCORE_ARRAY; i < LEN_SCORE_ARRAY; ++i) {
 		player->scores[i] = -1;
@@ -115,6 +178,10 @@ int get_dice_score(int *dice_freqs, score_combinations selection) {
 	}
 	return total;
 }
+
+
+/* Private functions */
+
 
 int get_straight_length(int *dice_freqs) {
 	int longest_straight_len = 0, current_straight_len = 0;

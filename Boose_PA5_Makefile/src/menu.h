@@ -27,13 +27,11 @@ struct option {
  * Date last modified: 10/22/2024
  * Description: Displays a pretty menu and allows the user to select an option.
  *              Returns -1 if there are no valid options.
- *              This function kinda sucks and needs a proper wrapper function to be usable.
- *              It does work, though.
+ *              This function kinda sucks but it does work.
  * Inputs:
- * `options` : An array of option structs that contain the messages to be printed for each option
- * `end_string` : A string to be printed at the end of the menu
- * `` :
- * `` :
+ * `options` : An array of `option` structs that contain the messages to be printed for each option.
+ * `end_string` : A string to be printed at the end of the menu.
+ * `num_options` : The total number of options (including unprinted ones).
  * Outputs: The option that was selected
  */
 int menu(option *options, char *end_string, int num_options);

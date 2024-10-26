@@ -1,12 +1,13 @@
 #include "menu.h"
 
 
-// keeping #defines as local as possible
+// These values are returned by handle_escape_sequences if the user presses an arrow key.
 #define UP_ARROW    0x141
 #define DOWN_ARROW  0x142
 #define RIGHT_ARROW 0x143
 #define LEFT_ARROW  0x144
 
+// *nix and Windows format arrow key escape sequences differently
 #ifdef _WIN32
 #define UP_CHAR     'H'
 #define DOWN_CHAR   'P'
@@ -19,55 +20,65 @@
 #define LEFT_CHAR   'D'
 #endif
 
-// functions are declared as static in the .c file to make them private
-
 /**
  * Function name: find_item
  * Date created: 10/22/2024
- * Date last modified: 
+ * Date last modified: 10/22/2024
  * Description: 
  * Inputs: 
- * Outputs: 
+ * `options` : An array of `option` structs containing the various menu options.
+ * `num_options` : The total number of options.
+ * `item_character` : The character that the user selected.
+ * `current_selection` : The user's current selection. 
+ * Outputs: The index of the option which can be selected by pressing `item_character`, or `current_selection` if the charater is not associated with an option.
  */
 static int find_item(option *options, int num_options, char item_character, int current_selection);
 
 /**
  * Function name: clear_row
  * Date created: 10/22/2024
- * Date last modified: 
- * Description: Prints a row without a `>` marker at the current cursor position
+ * Date last modified: 10/22/2024
+ * Description: Prints a row without a `>` marker at the current cursor position.
  * Inputs: 
- * Outputs: 
+ * `options` : An array of `option` structs containing the various menu options.
+ * `option_to_print` : The index of the option to print.
+ * Outputs: none
  */
 static void clear_row(option *options, int option_to_print);
 
 /**
  * Function name: print_row
  * Date created: 10/22/2024
- * Date last modified: 
- * Description: Prints a row with a `>` marker at the current cursor position
+ * Date last modified: 10/25/2024
+ * Description: Prints a row with a `>` marker at the current cursor position.
  * Inputs: 
- * Outputs: 
+ * `options` : An array of `option` structs containing the various menu options.
+ * `option_to_print` : The index of the option to print.
+ * Outputs: none
  */
 static void print_row(option *options, int option_to_print);
 
 /**
  * Function name: up_row
  * Date created: 10/22/2024
- * Date last modified: 
- * Description: 
+ * Date last modified: 10/22/2024
+ * Description: Returns the index of the option that is one row up from the current option.
  * Inputs: 
- * Outputs: 
+ * `options` : An array of `option` structs containing the various menu options.
+ * `current_selection` : The index of the user's current selection.
+ * Outputs: The index of the option that is one row up from the current option.
  */
 static int up_row(option *options, int current_selection);
 
 /**
  * Function name: down_row
  * Date created: 10/22/2024
- * Date last modified: 
- * Description: 
+ * Date last modified: 10/22/2024
+ * Description: Returns the index of the option that is one row down from the current option.
  * Inputs: 
- * Outputs: 
+ * `options` : An array of `option` structs containing the various menu options.
+ * `current_selection` : The index of the user's current selection.
+ * Outputs: The index of the option that is one row down from the current option.
  */
 static int down_row(option *options, int num_options, int current_selection);
 
@@ -106,6 +117,7 @@ static int print_end_string(char *end_string);
 *           If a valid escape sequence isn't recognized, ESC is returned and any characters this function grabs are pushed back onto stdin.
 */
 static int handle_escape_sequences(void);
+
 
 /* Public functions: */
 
@@ -172,7 +184,7 @@ int menu(option *options, char *end_string, int num_options) {
 
 int handle_escape_sequences(void) {
     int second_char;
-#ifndef _WIN32
+#ifndef _WIN32 // if we're on *nix, we need to get the `[` character from stdin.
     int first_char = GETCH();
     if (first_char != '[') {
         ungetc(first_char, stdin);
@@ -194,7 +206,7 @@ int handle_escape_sequences(void) {
             break;
         default:
             ungetc(second_char, stdin);
-#ifndef _WIN32
+#ifndef _WIN32 // only unget the first char if we actually got it in the first place
             ungetc(first_char, stdin);
 #endif
             return ESC;

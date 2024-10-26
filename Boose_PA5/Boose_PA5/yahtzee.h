@@ -56,75 +56,39 @@ void init_player_info(player_info *info);
 void play_yahtzee_game(void);
 
 /**
-* Function name: play_yahtzee_turn
-* Date created: 10/16/2024
-* Date last modified: 10/18/2024
-* Description: Plays through a turn of Yahtzee
-* Inputs: 
-* Outputs: 
-*/
+ * Function name: play_yahtzee_turn
+ * Date created: 10/16/2024
+ * Date last modified: 10/18/2024
+ * Description: Plays through a single turn of Yahtzee.
+ * Inputs: 
+ * `player` : A struct containing the info of the player.
+ * Outputs: none
+ */
 void play_yahtzee_turn(player_info *player);
 
 /**
-* Function name: start_turn
-* Date created: 10/16/2024
-* Date last modified: 10/18/2024
-* Description:	Displays the player's score and prompts them to start their turn.
-* Inputs: 
-* Outputs: 
-*/
+ * Function name: start_turn
+ * Date created: 10/16/2024
+ * Date last modified: 10/18/2024
+ * Description:	Displays the player's score and prompts them to start their turn.
+ * Inputs: 
+ * `player` : A struct containing the info of the player.
+ * `num_turns` : The number of turns that have passed
+ * `player_name` : The player's name, passed as a C-string.
+ * Outputs: none
+ */
 void start_turn(player_info *player, int num_turns, char *player_name);
 
 /**
-* Function name: get_dice_score
-* Date created: 10/12/2024
-* Date last modified: 10/12/2024
-* Description: 
-* Inputs: 
-* Outputs: 
-*/
+ * Function name: get_dice_score
+ * Date created: 10/12/2024
+ * Date last modified: 10/12/2024
+ * Description: Scores the dice according to a given score combination.
+ * Inputs: 
+ * `dice_freqs` : An array containing the frequency with which each die was rolled.
+ * `selection` : An enum containing the score combination that the user selected.
+ * Outputs: The score of the dice.
+ */
 int get_dice_score(int *dice_freqs, score_combinations selection);
-
-/**
-* Function name: 
-* Date created: 10/12/2024
-* Date last modified: 10/12/2024
-* Description: 
-* Inputs: 
-* Outputs: 
-*/
-int get_straight_length(int *dice_freqs);
-
-/**
-* Function name: find_max_freq
-* Date created: 10/12/2024
-* Date last modified: 10/12/2024
-* Description: 
-* Inputs: 
-* Outputs: 
-*/
-int find_max_freq(int *dice_freqs);
-
-/**
-* Function name: sum_dice
-* Date created: 10/15/2024
-* Date last modified: 10/15/2024
-* Description: 
-* Inputs: 
-* Outputs: 
-*/
-int sum_dice(int *dice_freqs);
-
-/**
-* Function name: sum_array
-* Date created: 10/16/2024
-* Date last modified: 10/18/2024
-* Description: Sums the values in the array from `start` to `end` that are not equal to -1.
-* Inputs: 
-* Outputs: 
-*/
-int sum_array(int *array, int start, int end);
-
-int find_full_house(int *dice_freqs);
 
 #endif

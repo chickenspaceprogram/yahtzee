@@ -6,7 +6,10 @@ To select items in a menu, use the arrow keys or press the key that corresponds 
 
 I could've/should've just used the `curses` library, but hey, this works, and I'm not going to bother rewriting it.
 
-Most of the game code is in the yahtzee.c/h and dice.c/h files, and the main menu is in main.c. A description is provided below of all files in this project, for reference:
+Most of the game code is in the yahtzee.c/h and dice.c/h files, and the main menu is in main.c. 
+Some of the functions are declared as static in the .c files to make them inaccessible to other parts of the program (and to make the header files more readable).
+
+A description is provided below of all files in this project, for reference:
 
 | File           | Description                                                 |
 | -------------- | ----------------------------------------------------------- |
